@@ -26,7 +26,7 @@ pipeline {
        steps{
           sshagent(['my-ssh-key']) {
           sh """ 
-          scp -F ssh_config target/hello-app-1.0.jar
+          scp -J tomcat/webapps target/hello-app-1.0.jar
           ubuntu@yourip:/opt/bitnami/tomcat/webapps
           ssh ubuntu@3.109.32.250 /opt/tomcat/bin/shutdown.sh
           ssh ubuntu@3.109.32.250 /opt/tomcat/bin/startup.sh
