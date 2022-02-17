@@ -24,16 +24,15 @@ pipeline {
         }
         stage("deploy-dev"){
        steps{
-          sshagent(['tomcat-dev1']) {
+          sshagent(['my-ssh-key']) {
           sh """
           scp -o StrictHostKeyChecking=no target/myweb.war  
-          ubuntu@yourip:/opt/tomcat/webapps/
-          ssh ubuntu@yourip /opt/tomcat/bin/shutdown.sh
-          ssh ubuntu@yourip /opt/tomcat/bin/startup.sh
+          tomcat@3.109.32.250:/opt/bitnami/tomcat/webapps/
+          ssh tomcat@3.109.32.250 /opt/bitnami/tomcat/bin/shutdown.sh
+          ssh tomcat@3.109.32.250 /opt/bitnami/tomcat/bin/startup.sh
            """
             }
           }
         }
-      }
-    }    
+      }    
 }
