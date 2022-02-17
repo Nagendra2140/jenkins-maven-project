@@ -3,25 +3,31 @@ pipeline{
   stages{
     stage("Git Checkout"){
       steps{
-            git credentialsId: 'github', url: 'https://github.com/Nagendra2140/jenkins-maven-project.git'
+            git credentialsId: 'github', url: 'https://github.com/aditya-malviya/myweb.git'
            }
           }
      stage('Build') {
             steps {
                 sh 'mvn -f hello-app/pom.xml -B -DskipTests clean package'
             }
+            post {
+                success {
+                    echo "Now Archiving the Artifacts....."
+                    archiveArtifacts artifacts: '**/*.jar'
+                }
+            }
+        }
      stage("deploy-dev"){
        steps{
-          sshagent(['my-ssh-key']) {
+          sshagent(['tomcat-dev1']) {
           sh """
           scp -o StrictHostKeyChecking=no target/myweb.war  
-          ubuntu@3.109.32.250:/opt/bitnami/tomcat/webapps/
-          ssh ubuntu@3.109.32.250 /opt/tomcat/bin/shutdown.sh
-          ssh ubuntu@3.109.32.250 /opt/tomcat/bin/startup.sh
+          ubuntu@yourip:/opt/tomcat/webapps/
+          ssh ubuntu@yourip /opt/tomcat/bin/shutdown.sh
+          ssh ubuntu@yourip /opt/tomcat/bin/startup.sh
            """
             }
           }
         }
       }
     }
-}
