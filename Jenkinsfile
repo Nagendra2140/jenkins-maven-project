@@ -6,11 +6,9 @@ pipeline{
             git credentialsId: 'github', url: 'https://github.com/Nagendra2140/jenkins-maven-project.git'
            }
           }
-     stage("Maven Build"){
-       steps{
-            sh "mvn clean package"
-            sh "mv target/*.war target/myweb.war"
-             }
+     stage('Build') {
+            steps {
+                sh 'mvn -f hello-app/pom.xml -B -DskipTests clean package'
             }
      stage("deploy-dev"){
        steps{
