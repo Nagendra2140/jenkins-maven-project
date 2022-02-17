@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage("deploy-dev"){
+        stage("deploy"){
        steps{
           sshagent(['my-ssh-key']) {
           sh """
