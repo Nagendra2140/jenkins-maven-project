@@ -3,7 +3,7 @@ pipeline{
   stages{
     stage("Git Checkout"){
       steps{
-            git credentialsId: 'github', url: 'https://github.com/aditya-malviya/myweb.git'
+            git credentialsId: 'github', url: 'https://github.com/Nagendra2140/jenkins-maven-project.git'
            }
           }
      stage('Build') {
@@ -19,12 +19,12 @@ pipeline{
         }
      stage("deploy-dev"){
        steps{
-          sshagent(['tomcat-dev1']) {
+          sshagent(['my-ssh-key']) {
           sh """
-          scp -o StrictHostKeyChecking=no target/myweb.war  
-          ubuntu@yourip:/opt/tomcat/webapps/
-          ssh ubuntu@yourip /opt/tomcat/bin/shutdown.sh
-          ssh ubuntu@yourip /opt/tomcat/bin/startup.sh
+          scp -o StrictHostKeyChecking=no target/hello-app-1.0.war  
+          ubuntu@3.109.32.250:/opt/bitnami/tomcat/webapps/
+          ssh ubuntu@3.109.32.250 /opt/bitnami/tomcat/bin/shutdown.sh
+          ssh ubuntu@3.109.32.250 /opt/bitnami/tomcat/bin/startup.sh
            """
             }
           }
