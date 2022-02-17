@@ -8,7 +8,7 @@ pipeline {
             post {
                 success {
                     echo "Now Archiving the Artifacts....."
-                    archiveArtifacts artifacts: '**/*.jar'
+                    archiveArtifacts artifacts: '**/*.war'
                 }
             }
         }
@@ -22,5 +22,18 @@ pipeline {
                 }
             }
         }
+        stage("deploy-dev"){
+       steps{
+          sshagent(['my-ssh-key']) {
+          sh """
+          scp -o StrictHostKeyChecking=no target/myweb.war  
+          ubuntu@yourip:/opt/bitnami/tomcat/webapps
+          ssh ubuntu@3.109.32.250 /opt/tomcat/bin/shutdown.sh
+          ssh ubuntu@3.109.32.250 /opt/tomcat/bin/startup.sh
+           """
+            }
+          }
+        }
+      }
     }
 }
